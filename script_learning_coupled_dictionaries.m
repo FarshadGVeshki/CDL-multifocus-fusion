@@ -5,7 +5,7 @@ addpath('couple_dictionary_learning_codes')
 addpath('training_data')
 
 %% parameters
-P = 30000; % max number of training patches
+P = 50000; % max number of training patches
 p = 8; % patch size
 ss = 1; % sliding step
 Eps = p^2*1e-4; %approximation threshold
@@ -13,7 +13,7 @@ w = 0.5; % tuning parameter omega
 param.omega = w; 
 opts.eps = Eps; 
 opts.k = 5; % maximim number of nonzeros in sparse vectors
-opts.K = 128; % number of atoms in dictionaries
+opts.K = 4*p^2; % number of atoms in dictionaries
 opts.Nit = 20; % number of CDL iterations
 opts.remMean = true; % removing mean from the samples
 opts.DCatom = true; % first atom is DC atom
@@ -33,7 +33,7 @@ end
 V = var([Xf;Xb]); % make sure patches with low variance are removed from traing data
 Xf(:,V<Eps) = [];
 Xb(:,V<Eps) = [];
-
+P = min(P,length(Xf));
 Inds = randperm(size(Xf,2));
 Xf = Xf(:,Inds(1:P)); Xf = Xf - mean(Xf);
 Xb = Xb(:,Inds(1:P)); Xb = Xb - mean(Xb);
