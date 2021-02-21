@@ -13,7 +13,7 @@ D = [Df;Db]; D = D./sqrt(sum(D.^2));
 p = sqrt(size(Df,1)); % patch size
 ss = 2; % sliding step
 Eps = p^2*1e-4; %approximation threshold
-k = 5; % maximum sparsity
+k = 3; % maximum sparsity
 param.L = k;
 param.eps = Eps;
 
