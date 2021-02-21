@@ -1,4 +1,4 @@
-function  imF = func_multifocus_fusion(im1,im2,Df,Db)
+function  [imF, Mask] = func_multifocus_fusion(im1,im2,Df,Db)
 % Multifocus image fusion using coupled dictionary learning
 %
 % Inputs: multifocus images(im1,im2); coupled multifocus dictionaries(focusd:Df, out of focus:Db)
@@ -11,7 +11,7 @@ function  imF = func_multifocus_fusion(im1,im2,Df,Db)
 %%% parameters and initialization
 D = [Df;Db]; D = D./sqrt(sum(D.^2));
 p = sqrt(size(Df,1)); % patch size
-ss = 1; % sliding step
+ss = 2; % sliding step
 Eps = p^2*1e-4; %approximation threshold
 k = 5; % maximum sparsity
 param.L = k;
@@ -38,7 +38,7 @@ Mask = mexCombinePatches(Mv,zeros(size(im1,1),size(im1,2)),p,0,ss);
 Mask(Mask>0.5)=1;
 Mask(Mask<=0.5)=0;
 % refining the mask
-ker = 12;
+ker = 10;
 Mask = conv2(Mask,ones(ker)/ker^2,'same');
 Mask(Mask>.5)=1;
 Mask(Mask<=.5)=0;
